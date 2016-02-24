@@ -1,5 +1,5 @@
 # Storytelling-HW2
-HW2 aims for calculating rate of a stream of data, in this case we are calculating rate of the twitter stream.
+HW2 aims to calculate rate of a stream of data, in this case we are calculating rate of the twitter stream.
 
 ## Installation
 1. Install `python 2.7`
@@ -13,12 +13,16 @@ HW2 aims for calculating rate of a stream of data, in this case we are calculati
 ## Usage
 
 ### poll-twitter.py
-- Simply run `python poll-twitter.py`. 
-- The output of this file is the time stamp of each generated tweet. We used `numpy` package to generate random time of sleep according to exponential function, to stimulate a poisson process. `tweepy` package is also used in this file, because we are polling twitter stream API here to get the streaming tweet. The keyword in this file is set to be "earthquake", so we are getting the time stamp of streamed tweet which has mentioned "earthquake".  
+- Simply run <pre><code>python poll-twitter.py</pre></code>. 
+- The output of this file is the time stamp of each generated tweet. 
+- We used `numpy` package to generate random time of sleep according to exponential function, to stimulate a poisson process. 
+- `tweepy` package is also used in this file, because we are polling twitter streaming API here to get the streamed tweet. 
+- The keyword in this file is set to be `earthquake`, so we are getting the time stamp of streamed tweet which has mentioned `earthquake`.  
 
 ### diff.py
 - Run `diff.py` with the output of `poll-twitter.py` piped to it. More explicitly, run `poll-twitter.py | diff.py`.
-- The output of this file is the time difference of each streamed tweet, together with its own time stamp. We took the output of `poll-tweepy.py` and calculate the time difference of each streamed data.  
+- We took the output of `poll-tweepy.py` and calculate the time difference of each streamed data.
+- The output of this file is the time difference of each streamed tweet, together with its own time stamp.  
 
 ### insert.py
 - Run `insert.py` with the output of `diff.py` piped to it. More explicitly, run `poll-twitter.py | diff.py | insert.py`.
