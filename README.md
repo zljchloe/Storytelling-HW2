@@ -9,6 +9,7 @@ cd tweepy
 python setup.py install</prev></code>
 3. Install `numpy` package, you can use command as following: `sudo pip install numpy`
 4. Install `redis` package, you can use command as following: `sudo pip install redis`
+5. Install `websocketd`
 
 ## Usage
 
@@ -29,7 +30,16 @@ python setup.py install</prev></code>
 - The purpose of this file is to insert the result of `diff.py` to redis database. We set the time stamp as the key, and the time difference as the value associated with the key, and then store them in the redis database.  
 
 ### avg.py
-- Run `avg.py` with the output of `insert.py` piped to it. More explicitly, run <pre><code>poll-twitter.py | diff.py | insert.py | avg.py</pre></code>
+- Run `avg.py` together with running `insert.py`. More explicitly, run 
+<pre><code>poll-twitter.py | diff.py | insert.py
+python avg.py</pre></code>
 - We are calculating rate of twitter stream in this file, by reading from redis database. The rate can be calculated in this way:
 <pre><code>rate = sum(time difference) / number of records</pre></code>
-Where time difference is the value stored in the redis database. `number of records` would go up by time, and drop down when it reaches expiration time we set in `insert.py` file.  
+Where time difference is the value stored in the redis database. `number of records` would go up by time, and drop down when it reaches expiration time we set in `insert.py` file.
+- An alert has been set up, which is when keyword `earthquake` is being mentioned in a relativly high rate, an alert message would be generated, telling people there might be an actual earthquake happening somewhere.  
+
+### index.html
+- To connect the alert system into a human-readable system, we need to use `websocketd` to transfer the messages into a web page.
+- Run <pre><code>poll-twitter.py | diff.py | insert.py
+websocketd --port=8080 ./avg.py</pre></code> And open `index.html`, we will see the message is now being printed to a web page.
+- When alert is off, the webpage simply prints out each time stamp of generated tweet. And when the rate of streaming exceeds a certain threshold (in this case we set `rate>10`), an alert message would pop up saying "there might be an earthquake happening somewhere!"  
